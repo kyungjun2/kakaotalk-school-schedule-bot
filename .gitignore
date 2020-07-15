@@ -1,0 +1,7 @@
+.idea/
+__pycache__/
+venv/
+import/
+database.db
+parsers/api_key.json
+*.png
