@@ -6,5 +6,5 @@ git update-index --chmod=+x run.sh
 
 nohup python3 app.py >> log.log &
 
-logresult=$(tail -n 6 log.log)
+logresult=$(tail -n 7 log.log)
 echo "$logresult"
