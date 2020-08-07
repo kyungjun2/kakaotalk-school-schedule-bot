@@ -115,5 +115,8 @@ def log_request_info():  # TOO MANY HACKERS :(
 
 
 if __name__ == "__main__":
+    from pathlib import Path
+    Path("./images/").mkdir(parents=True, exist_ok=True)
+
     app.config['STRICT_AUTHENTICATION'] = False
     app.run(debug=False, host='0.0.0.0', port='10000')
