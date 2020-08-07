@@ -40,6 +40,6 @@ def authorize():
 
     if app.config['STRICT_AUTHENTICATION']:
         app.config['CHATBOT_AUTH_KEY'] = os.urandom(3).hex().upper()
-        app.logger.info("SETTING NEW AUTH KEY : %s" % (app.config['CHATBOT_AUTH_KEY']))
+    app.logger.info("AUTH KEY : %s" % (app.config['CHATBOT_AUTH_KEY']))
     db.exit()
     return response.create_response()
