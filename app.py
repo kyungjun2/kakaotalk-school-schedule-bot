@@ -104,15 +104,16 @@ def serve_image(path):
 @app.before_request
 def log_request_info():  # TOO MANY HACKERS :(
     from flask import request
-    app.logger.info('[HTTP REQUEST FROM %s ]\n' % request.remote_addr +
+    app.logger.info('\n== [HTTP REQUEST FROM %s ] == \n' % request.remote_addr +
                     '[Location] : %s\n' % request.url +
                     '[Body]: %s\n' % (str(request.get_data())
                                       if type(request.get_data()).__name__ == 'bytes' else request.get_data()) +
-                    '[Headers]: \n%s' % request.headers)
+                    '[Headers]: \n%s\n\n' % request.headers)
 
     # 20.06.25 TODO 블랙리스트 기반 차단 제작
     return
 
 
 if __name__ == "__main__":
+    app.config['STRICT_AUTHENTICATION'] = False
     app.run(debug=False, host='0.0.0.0', port='10000')
