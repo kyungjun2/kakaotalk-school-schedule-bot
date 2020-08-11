@@ -8,8 +8,6 @@ app.logger.setLevel(logging.INFO)
 
 app.config['STRICT_AUTHENTICATION'] = True
 app.secret_key = os.urandom(16)
-app.config['CHATBOT_AUTH_KEY'] = os.urandom(3).hex().upper()
-app.logger.info("SETTING NEW AUTH KEY : %s" % (app.config['CHATBOT_AUTH_KEY']))
 
 from information import schedule_list, timetable, weather
 from information import meal as meal_
@@ -117,6 +115,24 @@ def log_request_info():  # TOO MANY HACKERS :(
 if __name__ == "__main__":
     from pathlib import Path
     Path("./images/").mkdir(parents=True, exist_ok=True)
-
+    
+    app.logger.setLevel(logging.DEBUG)
+    app.config['LOGGING_LEVEL'] = logging.DEBUG
+    app.config['LOGGING_FORMAT'] = '%(asctime)s %(levelname)s: %(message)s in %(filename)s:%(lineno)d]'
+    app.config['LOGGING_LOCATION'] = 'logs/'
+    app.config['LOGGING_FILENAME'] = 'log.log'
+    app.config['LOGGING_MAX_BYTES'] = 100000
+    app.config['LOGGING_BACKUP_COUNT'] = 1000
+    Path(f"./{app.config['LOGGING_LOCATION']}").mkdir(parents=True, exist_ok=True)
+    file_handler = RotatingFileHandler(app.config['LOGGING_LOCATION'] + app.config['LOGGING_FILENAME'],
+                                       maxBytes=app.config['LOGGING_MAX_BYTES'],
+                                       backupCount=app.config['LOGGING_BACKUP_COUNT'])
+    file_handler.setFormatter(Formatter(app.config['LOGGING_FORMAT']))
+    file_handler.setLevel(app.config['LOGGING_LEVEL'])
+    app.logger.addHandler(file_handler)
+    
+    app.logger.info("logging start")
+    app.config['CHATBOT_AUTH_KEY'] = os.urandom(3).hex().upper()
+    app.logger.info("SETTING NEW AUTH KEY : %s" % (app.config['CHATBOT_AUTH_KEY']))
     app.config['STRICT_AUTHENTICATION'] = False
     app.run(debug=False, host='0.0.0.0', port='10000')
